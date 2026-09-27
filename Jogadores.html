@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Jogadores</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            background: #8e24aa;
+            color: white;
+        }
+
+        #pergunta {
+            background: white;
+            color: black;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        button {
+            display: block;
+            width: 90%;
+            max-width: 500px;
+            margin: 12px auto;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 12px;
+        }
+
+        #resultado {
+            font-size: 22px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>⭐ Quiz de Jogadores</h1>
+
+    <p id="progresso">Pergunta 1 de 10</p>
+
+    <div id="pergunta"></div>
+
+    <div id="opcoes"></div>
+
+    <div id="resultado"></div>
+
+    <script>
+
+        var perguntas = [
+            ["Qual jogador é conhecido como Rei do Futebol?", ["Pelé", "Neymar", "Messi", "Cristiano Ronaldo"], 0],
+            ["Qual jogador argentino é conhecido como Lionel Messi?", ["Messi", "Mbappé", "Neymar", "Haaland"], 0],
+            ["Qual jogador português é conhecido como CR7?", ["Ronaldo", "Bruno Fernandes", "Pepe", "Bernardo Silva"], 0],
+            ["Qual jogador brasileiro é conhecido por jogar no Santos e no Barcelona?", ["Neymar", "Vinícius Júnior", "Ronaldo", "Casemiro"], 0],
+            ["Qual jogador norueguês é conhecido como Haaland?", ["Erling Haaland", "Martin Ødegaard", "Alexander Sørloth", "Joshua King"], 0],
+            ["Qual jogador francês é conhecido como Mbappé?", ["Kylian Mbappé", "Karim Benzema", "Paul Pogba", "Antoine Griezmann"], 0],
+            ["Qual jogador brasileiro é conhecido como Fenômeno?", ["Ronaldo", "Romário", "Ronaldinho", "Kaká"], 0],
+            ["Qual jogador brasileiro ficou famoso pelo drible e pelo 'Bruxo'?", ["Ronaldinho Gaúcho", "Neymar", "Kaká", "Rivaldo"], 0],
+            ["Qual jogador brasileiro ganhou duas Copas do Mundo e ficou famoso pelo número 10?", ["Pelé", "Zico", "Romário", "Cafu"], 0],
+            ["Qual jogador português é chamado de CR7?", ["Cristiano Ronaldo", "João Félix", "Bruno Fernandes", "Diogo J
