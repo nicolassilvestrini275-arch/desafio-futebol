@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quiz Futebol Brasileiro</title>
+
+<style>
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #063b20, #009c3b, #ffdf00);
+    color: white;
+}
+
+h1 {
+    font-size: 30px;
+}
+
+#vidas {
+    font-size: 26px;
+    margin: 15px;
+}
+
+.caixa {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 25px;
+    background: white;
+    color: black;
+    border-radius: 20px;
+}
+
+#pergunta {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+button {
+    width: 100%;
+    padding: 16px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 12px;
+    background: #009c3b;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#resultado {
+    margin-top: 20px;
+}
+
+.trofeu {
+    font-size: 65px;
+}
+
+.pontuacao {
+    font-size: 27px;
+    font-weight: bold;
+}
+
+.nivel {
+    font-size: 21px;
+    font-weight: bold;
+    margin: 10px;
+}
+
+.recorde {
+    font-size: 19px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+.fim {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🇧🇷 Quiz Futebol Brasileiro</h1>
+
+<p id="progresso">Pergunta 1 de 10</p>
+
+<div id="vidas">❤️❤️❤️</div>
+
+<div class="caixa">
+
+<div id="pergunta"></div>
+
+<div id="opcoes"></div>
+
+<div id="resultado"></div>
+
+</div>
+
+<script>
+
+var perguntas = [
+
+["Qual clube é conhecido como Timão?",
+["Santos","Corinthians","Palmeiras","Grêmio"],1],
+
+["Qual clube é conhecido como Verdão?",
+["Corinthians","Santos","Palmeiras","Flamengo"],2],
+
+["Qual clube é conhecido como Mengão?",
+["Flamengo","Fluminense","Vasco","Botafogo"],0],
+
+["Qual clube é conhecido como Peixe?",
+["Santos","São Paulo","Palmeiras","Corinthians"],0],
+
+["Qual seleção é a maior campeã da Copa do Mundo?",
+["Argentina","Brasil","Alemanha","Itália"],1],
+
+["Qual clube é conhecido como Urubu?",
+["Vasco","Botafogo","Flamengo","Fluminense"],2],
+
+["Qual clube é conhecido como Tricolor Paulista?",
+["Santos","Corinthians","São Paulo","Palmeiras"],2],
+
+["Qual clube é conhecido como Imortal?",
+["Grêmio","Internacional","Cruzeiro","Atlético-MG"],0],
+
+["Qual clube é conhecido como Galo?",
+["Cruzeiro","Atlético-MG","América-MG","Grêmio"],1],
+
+["Qual clube é conhecido como Gigante da Colina?",
+["Botafogo","Fluminense","Vasco","Flamengo"],2]
+
+];
+
+var atual = 0;
+var pontos = 0;
+var vidas = 3;
+
+function mostrarPergunta() {
+
+    document.getElementById("progresso").innerHTML =
+    "Pergunta " + (atual + 1) + " de 10";
+
+    document.getElementById("vidas").innerHTML =
+    "❤️".repeat(vidas) + "🖤".repeat(3 - vidas);
+
+    document.getElementById("pergunta").innerHTML =
+    perguntas[atual][0];
+
+    var opcoes = document.getElementById("opcoes");
+
+    opcoes.innerHTML = "";
+
+    for (let i = 0; i < 4; i++) {
+
+        let botao = document.createElement("button");
+
+        botao.textContent = perguntas[atual][1][i];
+
+        botao.onclick = function() {
+            responder(i);
+        };
+
+        opcoes.appendChild(botao);
+    }
+}
+
+function responder(resposta) {
+
+    if (resposta === perguntas[atual][2]) {
+        pontos += 10;
+    } else {
+        vidas--;
+    }
+
+    if (vidas === 0) {
+        fimDeJogo();
+        return;
+    }
+
+    atual++;
+
+    if (atual >= perguntas.length) {
+        mostrarResultado();
+    } else {
+        mostrarPergunta();
+    }
+}
+
+function fimDeJogo() {
+
+    document.getElementById("progresso").innerHTML = "";
+
+    document.getElementById("vidas").innerHTML =
+    "🖤🖤🖤";
+
+    document.getElementById("pergunta").innerHTML =
+    "💥 FIM DE JOGO";
+
+    document.getElementById("opcoes").innerHTML = "";
+
+    document.getElementById("resultado").innerHTML =
+
+    '<div class="fim">' +
+    'Você ficou sem vidas!' +
+    '</div>' +
+
+    '<div class="pontuacao">' +
+    pontos +
+    ' pontos' +
+    '</div>' +
+
+    '<button onclick="location.reload()">' +
+    '🔄 Jogar novamente' +
+    '</button>';
+}
+
+function mostrarResultado() {
+
+    document.getElementById("progresso").innerHTML = "";
+
+    document.getElementById("pergunta").innerHTML =
+    "🏆 RESULTADO FINAL";
+
+    document.getElementById("opcoes").innerHTML = "";
+
+    var trofeu;
+    var nivel;
+
+    if (pontos <= 30) {
+        trofeu = "🥉";
+        nivel = "Iniciante";
+    } else if (pontos <= 70) {
+        trofeu = "🥈";
+        nivel = "Craque";
+    } else {
+        trofeu = "🥇";
+        nivel = "Lenda";
+    }
+
+    var recorde = localStorage.getItem("recordeBrasil");
+
+    if (recorde == null) {
+        recorde = 0;
+    } else {
+        recorde = Number(recorde);
+    }
+
+    var mensagem = "";
+
+    if (pontos > recorde) {
+
+        recorde = pontos;
+
+        localStorage.setItem(
+            "recordeBrasil",
+            recorde
+        );
+
+        mensagem =
+        '<div class="fim">🔥 NOVO RECORDE! 🔥</div>';
+    }
+
+    document.getElementById("resultado").innerHTML =
+
+    '<div class="trofeu">' +
+    trofeu +
+    '</div>' +
+
+    '<div class="pontuacao">' +
+    pontos +
+    ' de 100 pontos' +
+    '</div>' +
+
+    '<div class="nivel">' +
+    'Nível: ' + nivel +
+    '</div>' +
+
+    mensagem +
+
+    '<div class="recorde">' +
+    '🏆 Seu recorde: ' +
+    recorde +
+    ' pontos' +
+    '</div>' +
+
+    '<button onclick="location.reload()">' +
+    '🔄 Jogar novamente' +
+    '</button>';
+}
+
+mostrarPergunta();
+
+</script>
+
+</body>
+
+</html>

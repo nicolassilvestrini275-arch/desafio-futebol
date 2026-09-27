@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quiz de Jogadores</title>
+
+<style>
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #3b0754, #8e24aa, #c43ad6);
+    color: white;
+}
+
+h1 {
+    font-size: 30px;
+}
+
+#vidas {
+    font-size: 26px;
+    margin: 15px;
+}
+
+.caixa {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 25px;
+    background: white;
+    color: black;
+    border-radius: 20px;
+}
+
+#pergunta {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+button {
+    width: 100%;
+    padding: 16px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 12px;
+    background: #8e24aa;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#resultado {
+    margin-top: 20px;
+}
+
+.trofeu {
+    font-size: 65px;
+}
+
+.pontuacao {
+    font-size: 27px;
+    font-weight: bold;
+}
+
+.nivel {
+    font-size: 21px;
+    font-weight: bold;
+    margin: 10px;
+}
+
+.recorde {
+    font-size: 19px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+.fim {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>⭐ Quiz de Jogadores</h1>
+
+<p id="progresso">Pergunta 1 de 10</p>
+
+<div id="vidas">❤️❤️❤️</div>
+
+<div class="caixa">
+
+<div id="pergunta"></div>
+
+<div id="opcoes"></div>
+
+<div id="resultado"></div>
+
+</div>
+
+<script>
+
+var perguntas = [
+
+[
+"Quem é conhecido como Rei do Futebol?",
+["Pelé","Maradona","Zico","Ronaldo"],
+0
+],
+
+[
+"Qual jogador argentino é conhecido como Lionel Messi?",
+["Lionel Messi","Neymar","Kaká","Rivaldo"],
+0
+],
+
+[
+"Quem é conhecido como CR7?",
+["Neymar","Cristiano Ronaldo","Mbappé","Haaland"],
+1
+],
+
+[
+"Qual jogador brasileiro jogou por Santos e Barcelona?",
+["Ronaldinho","Neymar","Ronaldo","Casemiro"],
+1
+],
+
+[
+"Qual jogador é conhecido como Erling Haaland?",
+["Haaland","Messi","Neymar","Benzema"],
+0
+],
+
+[
+"Qual jogador francês é conhecido como Kylian Mbappé?",
+["Mbappé","Griezmann","Pogba","Giroud"],
+0
+],
+
+[
+"Quem é conhecido como Fenômeno?",
+["Romário","Ronaldo","Pelé","Cafu"],
+1
+],
+
+[
+"Quem é conhecido como Bruxo?",
+["Kaká","Ronaldinho Gaúcho","Neymar","Rivaldo"],
+1
+],
+
+[
+"Qual jogador ficou famoso usando a camisa 10 do Brasil e é chamado de Rei do Futebol?",
+["Pelé","Cafu","Roberto Carlos","Dunga"],
+0
+],
+
+[
+"Qual jogador é conhecido mundialmente como CR7?",
+["Messi","Cristiano Ronaldo","Neymar","Haaland"],
+1
+]
+
+];
+
+var atual = 0;
+
+var pontos = 0;
+
+var vidas = 3;
+
+
+function mostrarPergunta() {
+
+    document.getElementById("progresso").innerHTML =
+    "Pergunta " + (atual + 1) + " de 10";
+
+    document.getElementById("vidas").innerHTML =
+    "❤️".repeat(vidas) +
+    "🖤".repeat(3 - vidas);
+
+    document.getElementById("pergunta").innerHTML =
+    perguntas[atual][0];
+
+    document.getElementById("opcoes").innerHTML = "";
+
+    for (var i = 0; i < 4; i++) {
+
+        var botao = document.createElement("button");
+
+        botao.innerHTML =
+        perguntas[atual][1][i];
+
+        botao.setAttribute(
+        "data-resposta",
+        i
+        );
+
+        botao.onclick = function() {
+
+            var resposta =
+            Number(
+            this.getAttribute("data-resposta")
+            );
+
+            responder(resposta);
+
+        };
+
+        document.getElementById("opcoes")
+        .appendChild(botao);
+
+    }
+
+}
+
+
+function responder(resposta) {
+
+    if (
+        resposta ===
+        perguntas[atual][2]
+    ) {
+
+        pontos = pontos + 10;
+
+    } else {
+
+        vidas = vidas - 1;
+
+    }
+
+
+    if (vidas <= 0) {
+
+        mostrarFimDeJogo();
+
+        return;
+
+    }
+
+
+    atual = atual + 1;
+
+
+    if (atual < 10) {
+
+        mostrarPergunta();
+
+    } else {
+
+        mostrarResultado();
+
+    }
+
+}
+
+
+function mostrarFimDeJogo() {
+
+    document.getElementById("progresso").innerHTML = "";
+
+    document.getElementById("vidas").innerHTML =
+    "🖤🖤🖤";
+
+    document.getElementById("pergunta").innerHTML =
+    "💥 FIM DE JOGO";
+
+    document.getElementById("opcoes").innerHTML = "";
+
+    document.getElementById("resultado").innerHTML =
+
+    '<div class="fim">' +
+    'Você ficou sem vidas!' +
+    '</div>' +
+
+    '<div class="pontuacao">' +
+    pontos +
+    ' pontos' +
+    '</div>' +
+
+    '<button onclick="location.reload()">' +
+    '🔄 Jogar novamente' +
+    '</button>';
+
+}
+
+
+function mostrarResultado() {
+
+    document.getElementById("progresso").innerHTML = "";
+
+    document.getElementById("vidas").innerHTML =
+    "❤️".repeat(vidas);
+
+    document.getElementById("pergunta").innerHTML =
+    "🏆 RESULTADO FINAL";
+
+    document.getElementById("opcoes").innerHTML = "";
+
+    var trofeu;
+
+    var nivel;
+
+
+    if (pontos <= 30) {
+
+        trofeu = "🥉";
+
+        nivel = "Iniciante";
+
+    }
+
+    else if (pontos <= 70) {
+
+        trofeu = "🥈";
+
+        nivel = "Craque";
+
+    }
+
+    else {
+
+        trofeu = "🥇";
+
+        nivel = "Lenda";
+
+    }
+
+
+    var recorde =
+    localStorage.getItem("recordeJogadores");
+
+
+    if (recorde == null) {
+
+        recorde = 0;
+
+    }
+
+    else {
+
+        recorde = Number(recorde);
+
+    }
+
+
+    var mensagem = "";
+
+
+    if (pontos > recorde) {
+
+        recorde = pontos;
+
+        localStorage.setItem(
+        "recordeJogadores",
+        recorde
+        );
+
+        mensagem =
+        '<div class="fim">' +
+        '🔥 NOVO RECORDE! 🔥' +
+        '</div>';
+
+    }
+
+
+    document.getElementById("resultado").innerHTML =
+
+    '<div class="trofeu">' +
+    trofeu +
+    '</div>' +
+
+    '<div class="pontuacao">' +
+    pontos +
+    ' de 100 pontos' +
+    '</div>' +
+
+    '<div class="nivel">' +
+    'Nível: ' +
+    nivel +
+    '</div>' +
+
+    mensagem +
+
+    '<div class="recorde">' +
+    '🏆 Seu recorde: ' +
+    recorde +
+    ' pontos' +
+    '</div>' +
+
+    '<button onclick="location.reload()">' +
+    '🔄 Jogar novamente' +
+    '</button>';
+
+}
+
+
+mostrarPergunta();
+
+</script>
+
+</body>
+
+</html>

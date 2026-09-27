@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quiz de Clubes</title>
+
+<style>
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #061b11, #0b6623, #13a84a);
+    color: white;
+}
+
+h1 {
+    font-size: 30px;
+}
+
+#vidas {
+    font-size: 26px;
+    margin: 15px;
+}
+
+.caixa {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 25px;
+    background: white;
+    color: black;
+    border-radius: 20px;
+}
+
+#pergunta {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+button {
+    width: 100%;
+    padding: 16px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 12px;
+    background: #0b6623;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#resultado {
+    margin-top: 20px;
+}
+
+.trofeu {
+    font-size: 65px;
+}
+
+.pontuacao {
+    font-size: 27px;
+    font-weight: bold;
+}
+
+.nivel {
+    font-size: 21px;
+    font-weight: bold;
+    margin: 10px;
+}
+
+.recorde {
+    font-size: 19px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+.fim {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🏟️ Quiz de Clubes</h1>
+
+<p id="progresso">Pergunta 1 de 10</p>
+
+<div id="vidas">❤️❤️❤️</div>
+
+<div class="caixa">
+
+<div id="pergunta"></div>
+
+<div id="opcoes"></div>
+
+<div id="resultado"></div>
+
+</div>
+
+<script>
+
+var perguntas = [
+
+[
+"Qual clube é conhecido como Peixe?",
+["Santos","Corinthians","Palmeiras","Flamengo"],
+0
+],
+
+[
+"Qual clube é conhecido como Timão?",
+["Santos","Corinthians","São Paulo","Grêmio"],
+1
+],
+
+[
+"Qual clube é conhecido como Mengão?",
+["Flamengo","Vasco","Botafogo","Fluminense"],
+0
+],
+
+[
+"Em qual estádio o Real Madrid manda seus jogos?",
+["Camp Nou","Santiago Bernabéu","Old Trafford","San Siro"],
+1
+],
+
+[
+"Qual clube é conhecido como Red Devils?",
+["Liverpool","Chelsea","Manchester United","Arsenal"],
+2
+],
+
+[
+"Qual clube é conhecido como The Reds?",
+["Liverpool","Manchester City","Chelsea","Arsenal"],
+0
+],
+
+[
+"Qual clube joga na Allianz Arena?",
+["Borussia Dortmund","Bayern de Munique","Juventus","PSG"],
+1
+],
+
+[
+"Qual clube é conhecido pela sigla PSG?",
+["Paris Saint-Germain","Paris Sporting Group","Porto Saint-Germain","Paris Soccer Group"],
+0
+],
+
+[
+"Qual clube italiano tem o nome Juventus?",
+["Milan","Inter de Milão","Roma","Juventus"],
+3
+],
+
+[
+"Qual clube é conhecido como Verdão?",
+["Palmeiras","Santos","Corinthians","São Paulo"],
+0
+]
+
+];
+
+var atual = 0;
+
+var pontos = 0;
+
+var vidas = 3;
+
+
+function mostrarPergunta() {
+
+    document.getElementById("progresso").innerHTML =
+    "Pergunta " + (atual + 1) + " de 10";
+
+    document.getElementById("vidas").innerHTML =
+    "❤️".repeat(vidas) +
+    "🖤".repeat(3 - vidas);
+
+    document.getElementById("pergunta").innerHTML =
+    perguntas[atual][0];
+
+    document.getElementById("opcoes").innerHTML = "";
+
+    for (var i = 0; i < 4; i++) {
+
+        var botao = document.createElement("button");
+
+        botao.innerHTML =
+        perguntas[atual][1][i];
+
+        botao.setAttribute(
+        "data-resposta",
+        i
+        );
+
+        botao.onclick = function() {
+
+            var resposta =
+            Number(
+            this.getAttribute("data-resposta")
+            );
+
+            responder(resposta);
+
+        };
+
+        document.getElementById("opcoes")
+        .appendChild(botao);
+
+    }
+
+}
+
+
+function responder(resposta) {
+
+    if (
+        resposta ===
+        perguntas[atual][2]
+    ) {
+
+        pontos = pontos + 10;
+
+    } else {
+
+        vidas = vidas - 1;
+
+    }
+
+
+    if (vidas <= 0) {
+
+        mostrarFimDeJogo();
+
+        return;
+
+    }
+
+
+    atual = atual + 1;
+
+
+    if (atual < 10) {
+
+        mostrarPergunta();
+
+    } else {
+
+        mostrarResultado();
+
+    }
+
+}
+
+
+function mostrarFimDeJogo() {
+
+    document.getElementById("progresso").innerHTML = "";
+
+    document.getElementById("vidas").innerHTML =
+    "🖤🖤🖤";
+
+    document.getElementById("pergunta").innerHTML =
+    "💥 FIM DE JOGO";
+
+    document.getElementById("opcoes").innerHTML = "";
+
+    document.getElementById("resultado").innerHTML =
+
+    '<div class="fim">' +
+    'Você ficou sem vidas!' +
+    '</div>' +
+
+    '<div class="pontuacao">' +
+    pontos +
+    ' pontos' +
+    '</div>' +
+
+    '<button onclick="location.reload()">' +
+    '🔄 Jogar novamente' +
+    '</button>';
+
+}
+
+
+function mostrarResultado() {
+
+    document.getElementById("progresso").innerHTML = "";
+
+    document.getElementById("vidas").innerHTML =
+    "❤️".repeat(vidas);
+
+    document.getElementById("pergunta").innerHTML =
+    "🏆 RESULTADO FINAL";
+
+    document.getElementById("opcoes").innerHTML = "";
+
+    var trofeu;
+
+    var nivel;
+
+
+    if (pontos <= 30) {
+
+        trofeu = "🥉";
+
+        nivel = "Iniciante";
+
+    }
+
+    else if (pontos <= 70) {
+
+        trofeu = "🥈";
+
+        nivel = "Craque";
+
+    }
+
+    else {
+
+        trofeu = "🥇";
+
+        nivel = "Lenda";
+
+    }
+
+
+    var recorde =
+    localStorage.getItem("recordeClubes");
+
+
+    if (recorde == null) {
+
+        recorde = 0;
+
+    }
+
+    else {
+
+        recorde = Number(recorde);
+
+    }
+
+
+    var mensagem = "";
+
+
+    if (pontos > recorde) {
+
+        recorde = pontos;
+
+        localStorage.setItem(
+        "recordeClubes",
+        recorde
+        );
+
+        mensagem =
+        '<div class="fim">' +
+        '🔥 NOVO RECORDE! 🔥' +
+        '</div>';
+
+    }
+
+
+    document.getElementById("resultado").innerHTML =
+
+    '<div class="trofeu">' +
+    trofeu +
+    '</div>' +
+
+    '<div class="pontuacao">' +
+    pontos +
+    ' de 100 pontos' +
+    '</div>' +
+
+    '<div class="nivel">' +
+    'Nível: ' +
+    nivel +
+    '</div>' +
+
+    mensagem +
+
+    '<div class="recorde">' +
+    '🏆 Seu recorde: ' +
+    recorde +
+    ' pontos' +
+    '</div>' +
+
+    '<button onclick="location.reload()">' +
+    '🔄 Jogar novamente' +
+    '</button>';
+
+}
+
+
+mostrarPergunta();
+
+</script>
+
+</body>
+
+</html>

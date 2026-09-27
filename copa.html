@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quiz Copa do Mundo</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #062b52, #087fba, #16b8d4);
+    color: white;
+    min-height: 100vh;
+}
+
+h1 {
+    font-size: 32px;
+    margin: 20px 0 10px;
+}
+
+#progresso {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#vidas {
+    font-size: 25px;
+    margin: 15px 0;
+}
+
+.caixa {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 25px;
+    background: white;
+    color: black;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+#pergunta {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+button {
+    width: 100%;
+    padding: 16px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 12px;
+    background: #087fba;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+button:active {
+    transform: scale(0.96);
+}
+
+#resultado {
+    margin-top: 20px;
+}
+
+.trofeu {
+    font-size: 65px;
+}
+
+.pontuacao {
+    font-size: 27px;
+    font-weight: bold;
+    margin: 10px;
+}
+
+.nivel {
+    font-size: 21px;
+    font-weight: bold;
+    margin: 10px;
+}
+
+.recorde {
+    font-size: 19px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+.novo-recorde {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+.fim {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🌎 Quiz da Copa do Mundo</h1>
+
+<p id="progresso">Pergunta 1 de 10</p>
+
+<div id="vidas">❤️❤️❤️</div>
+
+<div class="caixa">
+
+<div id="pergunta"></div>
+
+<div id="opcoes"></div>
+
+<div id="resultado"></div>
+
+</div>
+
+<script>
+
+var perguntas = [
+
+[
+"Qual país venceu a primeira Copa do Mundo, em 1930?",
+["Brasil", "Uruguai", "Argentina", "Itália"],
+1
+],
+
+[
+"Qual país tem mais títulos de Copa do Mundo?",
+["Alemanha", "Argentina", "Brasil", "Itália"],
+2
+],
+
+[
+"Em qual país foi realizada a Copa do Mundo de 2014?",
+["Brasil", "Rússia", "França", "Alemanha"],
+0
+],
+
+[
+"Quem foi campeão da Copa do Mundo de 2022?",
+["Brasil", "Argentina", "França", "Croácia"],
+1
+],
+
+[
+"Qual país sediou a Copa do Mundo de 2018?",
+["Rússia", "Japão", "Alemanha", "México"],
+0
+],
+
+[
+"Qual seleção é conhecida como Azzurra?",
+["Itália", "Espanha", "França", "Portugal"],
+0
+],
+
+[
+"Qual seleção venceu a Copa do Mundo de 2010?",
+["Brasil", "Espanha", "Alemanha", "Holanda"],
+1
+],
+
+[
+"Qual país sediou a Copa do Mundo de 2002 junto com a Coreia do Sul?",
+["China", "Japão", "Rússia", "Austrália"],
+1
+],
+
+[
+"Qual seleção foi campeã da Copa do Mundo de 2014?",
+["Argentina", "Alemanha", "Brasil", "Espanha"],
+1
+],
+
+[
+"Em qual país foi disputada a Copa do Mundo de 1950?",
+["Brasil", "Uruguai", "Itália", "Suíça"],
+0
+]
+
+];
+
+var atual = 0;
+
+var pontos = 0;
+
+var vidas = 3;
+
+function mostrarPergunta() {
+
+    document.getElementById("progresso").innerHTML =
+    "Pergunta " + (atual + 1) + " de 10";
+
+    document.getElementById("vidas").innerHTML =
+    "❤️".repeat(vidas) +
+    "🖤".repeat(3 - vidas);
+
+    document.getElementById("pergunta").innerHTML =
+    perguntas[atual][0];
+
+    document.getElementById("opcoes").innerHTML = "";
+
+    for (var i = 0; i < 4; i++) {
+
+        var botao = document.createElement("button");
+
+        botao.innerHTML = perguntas[atual][1][i];
+
+        botao.setAttribute("data-resposta", i);
+
+        botao.onclick = function() {
+
+            var resposta =
+            Number(this.getAttribute("data-resposta"));
+
+            responder(resposta);
+
+        };
+
+        document.getElementById("opcoes").appendChild(botao);
+    }
+}
+
+function responder(resposta) {
+
+    if (resposta === perguntas[atual][2]) {
+
+        pontos += 10;
+
+    } else {
+
+        vidas--;
+
+    }
+
+    if (vidas <= 0) {
+
+        mostrarFimDeJogo();
+
+        return;
+    }
+
+    atual++;
+
+    if (atual < perguntas.length) {
+
+        mostrarPergunta();
+
+    } else {
+
+        mostrarResultado();
+    }
+}
+
+function mostrarFimDeJogo() {
+
+    document.getElementById("progresso").innerHTML = "";
+
+    document.getElementById("vidas").innerHTML =
+    "🖤🖤🖤";
+
+    document.getElementById("pergunta").innerHTML =
+    "💥 FIM DE JOGO";
+
+    document.getElementById("opcoes").innerHTML = "";
+
+    document.getElementById("resultado").innerHTML =
+
+    '<div class="fim">' +
+    'Você ficou sem vidas!' +
+    '</div>' +
+
+    '<div class="pontuacao">' +
+    pontos +
+    ' pontos' +
+    '</div>' +
+
+    '<button onclick="location.reload()">' +
+    '🔄 Jogar novamente' +
+    '</button>';
+}
+
+function mostrarResultado() {
+
+    document.getElementById("progresso").innerHTML = "";
+
+    document.getElementById("vidas").innerHTML =
+    "❤️".repeat(vidas);
+
+    document.getElementById("pergunta").innerHTML =
+    "🏆 RESULTADO FINAL";
+
+    document.getElementById("opcoes").innerHTML = "";
+
+    var trofeu;
+
+    var nivel;
+
+    if (pontos <= 30) {
+
+        trofeu = "🥉";
+        nivel = "Iniciante";
+
+    } else if (pontos <= 70) {
+
+        trofeu = "🥈";
+        nivel = "Craque";
+
+    } else {
+
+        trofeu = "🥇";
+        nivel = "Lenda";
+    }
+
+    var recorde =
+    localStorage.getItem("recordeCopa");
+
+    if (recorde == null) {
+
+        recorde = 0;
+
+    } else {
+
+        recorde = Number(recorde);
+    }
+
+    var mensagem = "";
+
+    if (pontos > recorde) {
+
+        recorde = pontos;
+
+        localStorage.setItem(
+        "recordeCopa",
+        recorde
+        );
+
+        mensagem =
+        '<div class="novo-recorde">' +
+        '🔥 NOVO RECORDE! 🔥' +
+        '</div>';
+    }
+
+    document.getElementById("resultado").innerHTML =
+
+    '<div class="trofeu">' +
+    trofeu +
+    '</div>' +
+
+    '<div class="pontuacao">' +
+    pontos +
+    ' de 100 pontos' +
+    '</div>' +
+
+    '<div class="nivel">' +
+    'Nível: ' +
+    nivel +
+    '</div>' +
+
+    mensagem +
+
+    '<div class="recorde">' +
+    '🏆 Seu recorde: ' +
+    recorde +
+    ' pontos' +
+    '</div>' +
+
+    '<button onclick="location.reload()">' +
+    '🔄 Jogar novamente' +
+    '</button>';
+}
+
+mostrarPergunta();
+
+</script>
+
+</body>
+
+</html>
